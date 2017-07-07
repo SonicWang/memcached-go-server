@@ -1,0 +1,18 @@
+require 'socket'
+x = ARGV[0]
+if x == nil
+  x = 300000
+else
+  x = x.to_i
+end
+start = Time.now.to_f
+socket = TCPSocket.new("127.0.0.1", 3333)
+s = "\x80\x01\x00\x05\x08\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00HelloWorld"
+socket.write(s)
+puts socket.read(24).inspect
+s = "\x80\x00\x00\x05\x00\x00\x00\x00\x00\x00\x00\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00Hello"
+x.times do
+socket.write(s)
+socket.read(33).inspect
+end
+puts "#{x} GETs: ", Time.now.to_f - start
